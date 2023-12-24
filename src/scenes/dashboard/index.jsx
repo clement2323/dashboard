@@ -111,7 +111,7 @@ const Dashboard = () => {
           alignItems="center"
           justifyContent="center"
         >
-          <StatBox
+        <StatBox
             title="1,325,134"
             subtitle="Traffic Received"
             progress="0.80"

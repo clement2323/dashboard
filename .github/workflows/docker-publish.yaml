@@ -24,5 +24,3 @@ jobs:
           file: ./Dockerfile
           tags: cguillo/dashboarddirag:vfake
 
-
-          dckr_pat_vVOqPO5qAHyCAgnIF8_N5QtL55w

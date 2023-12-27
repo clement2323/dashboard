@@ -10,8 +10,7 @@ const BarChart = ({ isDashboard = false }) => {
   return (
     <ResponsiveBar
       data={data}
-      theme={{
-        // added
+      ttheme={{
         axis: {
           domain: {
             line: {
@@ -36,6 +35,11 @@ const BarChart = ({ isDashboard = false }) => {
         legends: {
           text: {
             fill: colors.grey[100],
+          },
+        },
+        tooltip: {
+          container: {
+            color: colors.primary[500],
           },
         },
       }}

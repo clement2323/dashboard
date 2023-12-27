@@ -1,0 +1,20 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: dashboarddirag
+spec:
+  tls: # https = http + tls -> couche de confidentialité, client et serveur ne parlent pas en clair mais definissent un tunnel de confidentialité dans lequel ils sont les seuls à comprendre le contenu
+    - hosts:
+        - dashboard_dirag.kub.sspcloud.fr
+  rules:
+  - host: dashboard_dirag.kub.sspcloud.fr
+
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service: # c'est bien le nom du service
+            name: dashboarddirag
+            port: 
+              number: 3000

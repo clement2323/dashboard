@@ -1,0 +1,22 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dashboarddirag  # id kubernetes, pour repérer, mise à jour etc.., unique pour chaque namespacexressource
+  #1 trio d'unicité : namespace/name/kind
+spec:
+  replicas: 1
+  selector: # système labels selector, marqueurs etc.. pour repérer par la suite et sélectionner
+    matchLabels:
+      app: dashboarddirag # comment retrouver mes pods ? (avec quel label ?)
+  template: # je mets des labels sur les pods-> le déploiement donenra naissance à des pods auxquels le label nginxlabel1 sera donné
+    metadata:
+      labels:
+        app: dashboarddirag
+    spec:
+      containers:
+        - name: dashboarddirag
+          image: cguillo/dashboarddirag # dorowu/ubuntu-desktop-lxde-vnc
+
+        
+    

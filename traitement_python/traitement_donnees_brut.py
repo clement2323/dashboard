@@ -104,8 +104,9 @@ totdf.to_csv("donnees_enq_concatennees.csv")
 totdf["txcoll"] = totdf.realise/totdf.nfa
 
 tab_agr = totdf[totdf.enquete == "EEC"].groupby("semaine").sum()
-tab_agr["txcoll"] = (tab_agr.reussis /tab_agr.nfa)*100
-tab_agr["semaine"] = tab_agr.index
+tab_agr["y"] = (tab_agr.reussis /tab_agr.nfa)*100
+tab_agr["x"] = tab_agr.index
+
 
 # 2) On peut faire un taux de l'EEC tout trimestre confondu 
 # 3) puis un taux par trimestre et par semaine
@@ -113,7 +114,7 @@ tab_agr["semaine"] = tab_agr.index
 # 5) taux de collecte par enqueteur en nuage de points ?
 
 # pour plus tard : save JSON au bon format pour etre lu par js, exporte que les donneees pour graph
-json_string = json.dumps(tab_agr[["semaine","txcoll"]].to_dict(orient='records'))
+json_string = json.dumps(tab_agr[["x","y"]].to_dict(orient='records'))
 # Save JSON string to a file
 with open('EEC.json', 'w') as file:
     file.write(json_string)

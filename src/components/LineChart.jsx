@@ -15,7 +15,7 @@ const LineChart = ({ isCustomLineColors = false, isDashboard = false }) => {
         row.y = row.y[0];
       }
       row.x = parseInt(row.x);
-      delete row.id;
+      //delete row.id;
       return row;
     });
   }
@@ -49,16 +49,55 @@ const LineChart = ({ isCustomLineColors = false, isDashboard = false }) => {
       }
     });
   
-    //console.log(data);
   };
+ 
 
-
-    doTest("EEC", "blue", `
-    SELECT semaine as x, sum(nfa) as y
+  doTest("Martinique", `${colors.redAccent[400]}`, `
+  WITH cumul AS (
+    SELECT semaine, 
+           SUM(sum(reussis)) OVER (ORDER BY semaine ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) as reussis_cumul,
+           SUM(sum(nfa)) OVER (ORDER BY semaine ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) as nfa_cumul
     FROM 'https://minio.lab.sspcloud.fr/cguillo/donnees_enq_concatennees.parquet'
-    WHERE enquete = 'EEC'
+    WHERE enquete = 'EEC' AND dep = '972' And semaine IN (36, 37,43,45,46,47,48,49)
     GROUP BY semaine
-  `);
+    ORDER BY semaine
+  )
+  SELECT semaine as x, 100*reussis_cumul/ nfa_cumul as y
+  FROM cumul
+  
+`);
+
+doTest("Guyane", `${colors.greenAccent[400]}`, `
+WITH cumul AS (
+  SELECT semaine, 
+         SUM(sum(reussis)) OVER (ORDER BY semaine ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) as reussis_cumul,
+         SUM(sum(nfa)) OVER (ORDER BY semaine ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) as nfa_cumul
+  FROM 'https://minio.lab.sspcloud.fr/cguillo/donnees_enq_concatennees.parquet'
+  WHERE enquete = 'EEC' AND dep = '973' and semaine IN (36, 37,43,45,46,47,48,49)
+  GROUP BY semaine
+  ORDER BY semaine
+)
+SELECT semaine as x, 100*reussis_cumul/ nfa_cumul as y
+FROM cumul
+
+`);
+
+doTest("Guadeloupe", `${colors.grey[400]}`, `
+WITH cumul AS (
+  SELECT semaine, 
+         SUM(sum(reussis)) OVER (ORDER BY semaine ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) as reussis_cumul,
+         SUM(sum(nfa)) OVER (ORDER BY semaine ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) as nfa_cumul
+  FROM 'https://minio.lab.sspcloud.fr/cguillo/donnees_enq_concatennees.parquet'
+  WHERE enquete = 'EEC' AND dep = '971' And semaine IN (36, 37,43,45,46,47,48,49)
+  GROUP BY semaine
+  ORDER BY semaine
+)
+SELECT semaine as x, 100*reussis_cumul/ nfa_cumul as y
+FROM cumul
+
+`);
+console.log("appel doTest");
+console.log(data);
   
   }, []);
 
@@ -106,11 +145,11 @@ const LineChart = ({ isCustomLineColors = false, isDashboard = false }) => {
         type: "linear",
         min: "auto",
         max: "auto",
-        stacked: true,
+      // stacked: true,
         reverse: false,
       }}
       yFormat=" >-.2f"
-      curve="catmullRom"
+      //curve="catmullRom"
       axisTop={null}
       axisRight={null}
       axisBottom={{
@@ -118,7 +157,7 @@ const LineChart = ({ isCustomLineColors = false, isDashboard = false }) => {
         tickSize: 0,
         tickPadding: 5,
         tickRotation: 0,
-        legend: isDashboard ? undefined : "transportation", // added
+        legend: isDashboard ? undefined : "semaine", // added
         legendOffset: 36,
         legendPosition: "middle",
       }}
@@ -128,7 +167,7 @@ const LineChart = ({ isCustomLineColors = false, isDashboard = false }) => {
         tickSize: 3,
         tickPadding: 5,
         tickRotation: 0,
-        legend: isDashboard ? undefined : "count", // added
+        legend: isDashboard ? undefined : "taux de collecte", // added
         legendOffset: -40,
         legendPosition: "middle",
       }}

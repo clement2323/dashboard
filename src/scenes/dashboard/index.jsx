@@ -21,7 +21,7 @@ const Dashboard = () => {
     <Box m="20px">
       {/* HEADER */}
       <Box display="flex" justifyContent="space-between" alignItems="center">
-        <Header title="DASHBOARD" subtitle="Welcome to your dashboard" />
+        <Header title="Tableau de bord" subtitle="Rien que des taux, encore des taux.." />
 
         <Box>
           <Button
@@ -47,7 +47,7 @@ const Dashboard = () => {
         gap="20px"
       >
         {/* ROW 1 */}
-        <Box
+        {/* <Box
           gridColumn="span 3"
           backgroundColor={colors.primary[400]}
           display="flex"
@@ -122,11 +122,11 @@ const Dashboard = () => {
               />
             }
           />
-        </Box>
+        </Box> */}
 
         {/* ROW 2 */}
         <Box
-          gridColumn="span 8"
+          gridColumn="span 12"
           gridRow="span 2"
           backgroundColor={colors.primary[400]}
         >
@@ -137,22 +137,22 @@ const Dashboard = () => {
             justifyContent="space-between"
             alignItems="center"
           >
-            <Box>
+            {/* <Box> */}
               <Typography
                 variant="h5"
                 fontWeight="600"
                 color={colors.grey[100]}
               >
-                Revenue Generated
+                Enquête EEC
               </Typography>
-              <Typography
+              {/* <Typography
                 variant="h3"
                 fontWeight="bold"
                 color={colors.greenAccent[500]}
               >
                 $59,342.32
-              </Typography>
-            </Box>
+              </Typography>  */}
+            {/* </Box> */}
             <Box>
               <IconButton>
                 <DownloadOutlinedIcon
@@ -165,7 +165,7 @@ const Dashboard = () => {
             <LineChart isDashboard={true} />
           </Box>
         </Box>
-        <Box
+        {/* <Box
           gridColumn="span 4"
           gridRow="span 2"
           backgroundColor={colors.primary[400]}
@@ -214,7 +214,7 @@ const Dashboard = () => {
               </Box>
             </Box>
           ))}
-        </Box>
+        </Box> */}
 
         {/* ROW 3 */}
         <Box

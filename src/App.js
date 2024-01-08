@@ -65,3 +65,5 @@ export default App;
 /*https://mattermost.com/blog/how-to-deploy-a-react-app-to-kubernetes-using-docker/*/
 // TO DO : un dash board par  dep  généralisé avec le nom du dep dans l'url
 // un dashboard pour la dirag dans son ensemble
+// faire un module à part hors react pour exporter les data et les récupérer dans les modules
+// gérer le calendrier en backend 

@@ -2,10 +2,35 @@ import { ResponsivePie } from "@nivo/pie";
 import { tokens } from "../theme";
 import { useTheme } from "@mui/material";
 import { mockPieData as data } from "../data/mockData";
+import { useState, useEffect } from "react";
+import DuckDb from "../DuckDb.js";
+
+
+
 
 const PieChart = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+ 
+  const [rows, setRows] = useState([]);
+
+  const doTest = async () => {
+
+    var result = await DuckDb.test(`
+    SELECT sum(nfa)-sum(realise) as nonrealise, sum(reussis) as reussis, sum(hc) as hc, sum(dechets) as dechets
+    FROM 'https://minio.lab.sspcloud.fr/cguillo/donnees_enq_concatennees.parquet'
+    `);
+
+
+    setRows(result);
+  };
+   
+  useEffect(() => {
+    console.log("KIKIII")
+   
+    doTest();
+    console.log(rows)
+  }, []);
   return (
     <ResponsivePie
       data={data}

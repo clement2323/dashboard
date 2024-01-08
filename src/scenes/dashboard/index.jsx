@@ -1,21 +1,36 @@
 import { Box, Button, IconButton, Typography, useTheme } from "@mui/material";
 import { tokens } from "../../theme";
-import { mockTransactions } from "../../data/mockData";
 import DownloadOutlinedIcon from "@mui/icons-material/DownloadOutlined";
-import EmailIcon from "@mui/icons-material/Email";
-import PointOfSaleIcon from "@mui/icons-material/PointOfSale";
-import PersonAddIcon from "@mui/icons-material/PersonAdd";
-import TrafficIcon from "@mui/icons-material/Traffic";
+import { useEffect, useState } from "react";
+import DuckDb from "../../DuckDb";
+// import EmailIcon from "@mui/icons-material/Email";
+// import PointOfSaleIcon from "@mui/icons-material/PointOfSale";
+// import PersonAddIcon from "@mui/icons-material/PersonAdd";
+// import TrafficIcon from "@mui/icons-material/Traffic";
 import Header from "../../components/Header";
 import LineChart from "../../components/LineChart";
 import GeographyChart from "../../components/GeographyChart";
 import BarChart from "../../components/BarChart";
-import StatBox from "../../components/StatBox";
+//import StatBox from "../../components/StatBox";
 import ProgressCircle from "../../components/ProgressCircle";
 
 const Dashboard = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  const [taux, setTaux] = useState([]);
+
+  const doTest = async () => {
+    var result = await DuckDb.test(`
+    SELECT ROUND(100 * SUM(reussis) / SUM(nfa)) as taux
+    FROM 'https://minio.lab.sspcloud.fr/cguillo/donnees_enq_concatennees.parquet'
+    where enquete = 'EEC'
+    `);
+    setTaux(result[0].taux);
+  };
+   
+  useEffect(() => {
+    doTest();
+  }, []);
 
   return (
     <Box m="20px">
@@ -224,7 +239,7 @@ const Dashboard = () => {
           p="30px"
         >
           <Typography variant="h5" fontWeight="600">
-            Campaign
+            Enquêtes ménages
           </Typography>
           <Box
             display="flex"
@@ -232,15 +247,15 @@ const Dashboard = () => {
             alignItems="center"
             mt="25px"
           >
-            <ProgressCircle size="125" />
+            <ProgressCircle size="125"/>
             <Typography
               variant="h5"
               color={colors.greenAccent[500]}
               sx={{ mt: "15px" }}
             >
-              $48,352 revenue generated
+              taux de collecte EEC : {taux} %
             </Typography>
-            <Typography>Includes extra misc expenditures and costs</Typography>
+            <Typography></Typography>
           </Box>
         </Box>
         <Box

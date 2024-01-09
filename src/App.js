@@ -60,7 +60,7 @@ function App() {
 }
 
 export default App;
-
+//
 /*Docker Part*/
 /*https://mattermost.com/blog/how-to-deploy-a-react-app-to-kubernetes-using-docker/*/
 // TO DO : un dash board par  dep  généralisé avec le nom du dep dans l'url

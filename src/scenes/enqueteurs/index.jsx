@@ -3,7 +3,7 @@ import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
 import Header from "../../components/Header";
 import { useTheme } from "@mui/material";
-import { enqueteurs as data } from "../../data/duckDbData.js";
+import { enqueteurs as data } from "../../data/DuckDbData.js";
 
 const Enqueteurs = () => {
 

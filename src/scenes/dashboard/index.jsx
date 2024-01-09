@@ -1,8 +1,7 @@
 import { Box, Button, IconButton, Typography, useTheme } from "@mui/material";
 import { tokens } from "../../theme";
 import DownloadOutlinedIcon from "@mui/icons-material/DownloadOutlined";
-import { useEffect, useState } from "react";
-import DuckDb from "../../DuckDb";
+
 // import EmailIcon from "@mui/icons-material/Email";
 // import PointOfSaleIcon from "@mui/icons-material/PointOfSale";
 // import PersonAddIcon from "@mui/icons-material/PersonAdd";
@@ -13,24 +12,17 @@ import GeographyChart from "../../components/GeographyChart";
 import BarChart from "../../components/BarChart";
 //import StatBox from "../../components/StatBox";
 import ProgressCircle from "../../components/ProgressCircle";
+import { donneesEECLine as dataEEC } from "../../data/DuckDbData.js";
+import { donneesHVPLine as dataHVP } from "../../data/DuckDbData.js";
+import {tauxEEC} from "../../data/DuckDbData.js";
+import {tauxHVP} from "../../data/DuckDbData.js";
+import {dataBarEEC} from "../../data/DuckDbData.js";
+
 
 const Dashboard = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-  const [taux, setTaux] = useState([]);
-
-  const doTest = async () => {
-    var result = await DuckDb.test(`
-    SELECT ROUND(100 * SUM(reussis) / SUM(nfa)) as taux
-    FROM 'https://minio.lab.sspcloud.fr/cguillo/donnees_enq_concatennees.parquet'
-    where enquete = 'EEC'
-    `);
-    setTaux(result[0].taux);
-  };
-   
-  useEffect(() => {
-    doTest();
-  }, []);
+  
 
   return (
     <Box m="20px">
@@ -141,7 +133,7 @@ const Dashboard = () => {
 
         {/* ROW 2 */}
         <Box
-          gridColumn="span 12"
+          gridColumn="span 6"
           gridRow="span 2"
           backgroundColor={colors.primary[400]}
         >
@@ -177,7 +169,47 @@ const Dashboard = () => {
             </Box>
           </Box>
           <Box height="250px" m="-20px 0 0 0">
-            <LineChart isDashboard={true} />
+            <LineChart isDashboard={true} data ={dataEEC} />
+          </Box>
+        </Box>
+        <Box
+          gridColumn="span 6"
+          gridRow="span 2"
+          backgroundColor={colors.primary[400]}
+        >
+          <Box
+            mt="25px"
+            p="0 30px"
+            display="flex "
+            justifyContent="space-between"
+            alignItems="center"
+          >
+            {/* <Box> */}
+              <Typography
+                variant="h5"
+                fontWeight="600"
+                color={colors.grey[100]}
+              >
+                Enquête HVP
+              </Typography>
+              {/* <Typography
+                variant="h3"
+                fontWeight="bold"
+                color={colors.greenAccent[500]}
+              >
+                $59,342.32
+              </Typography>  */}
+            {/* </Box> */}
+            <Box>
+              <IconButton>
+                <DownloadOutlinedIcon
+                  sx={{ fontSize: "26px", color: colors.greenAccent[500] }}
+                />
+              </IconButton>
+            </Box>
+          </Box>
+          <Box height="250px" m="-20px 0 0 0">
+            <LineChart isDashboard={true} data ={dataHVP} />
           </Box>
         </Box>
         {/* <Box
@@ -247,13 +279,14 @@ const Dashboard = () => {
             alignItems="center"
             mt="25px"
           >
-            <ProgressCircle size="125"/>
+            <ProgressCircle size="100"/>
             <Typography
               variant="h5"
               color={colors.greenAccent[500]}
               sx={{ mt: "15px" }}
             >
-              taux de collecte EEC : {taux} %
+              taux de collecte EEC : {tauxEEC} % <br />
+              taux de collecte HVP : {tauxHVP} %
             </Typography>
             <Typography></Typography>
           </Box>
@@ -271,7 +304,7 @@ const Dashboard = () => {
             Sales Quantity
           </Typography>
           <Box height="250px" mt="-20px">
-            <BarChart isDashboard={true} />
+            <BarChart data = {dataBarEEC}  isDashboard={true} />
           </Box>
         </Box>
         <Box

@@ -1,16 +1,15 @@
 import { useTheme } from "@mui/material";
 import { ResponsiveBar } from "@nivo/bar";
 import { tokens } from "../theme";
-import { mockBarData as data } from "../data/mockData";
 
-const BarChart = ({ isDashboard = false }) => {
+const BarChart = ({ data, isDashboard = false }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
   return (
     <ResponsiveBar
       data={data}
-      ttheme={{
+      theme={{
         axis: {
           domain: {
             line: {
@@ -39,12 +38,12 @@ const BarChart = ({ isDashboard = false }) => {
         },
         tooltip: {
           container: {
-            color: colors.primary[500],
+            color: colors.grey[500],
           },
         },
       }}
-      keys={["hot dog", "burger", "sandwich", "kebab", "fries", "donut"]}
-      indexBy="country"
+      keys={["nonrealise", "reussis", "dechets", "hc"]}
+      indexBy="trimestre"
       margin={{ top: 50, right: 130, bottom: 50, left: 60 }}
       padding={0.3}
       valueScale={{ type: "linear" }}
@@ -125,7 +124,7 @@ const BarChart = ({ isDashboard = false }) => {
       ]}
       role="application"
       barAriaLabel={function (e) {
-        return e.id + ": " + e.formattedValue + " in country: " + e.indexValue;
+        return e.id + ": " + e.formattedValue + " in trimestre: " + e.indexValue;
       }}
     />
   );

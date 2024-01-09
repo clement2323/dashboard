@@ -67,3 +67,5 @@ export default App;
 // un dashboard pour la dirag dans son ensemble
 // faire un module à part hors react pour exporter les data et les récupérer dans les modules
 // gérer le calendrier en backend 
+// SRCV,ENL HVP
+// Calendrier d'enquêtes etc ...

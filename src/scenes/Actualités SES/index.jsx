@@ -42,7 +42,7 @@ const Actualite = () => {
       <Accordion defaultExpanded>
         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
           <Typography color={colors.greenAccent[500]} variant="h5">
-            PRojet suivi des enquêteurs
+            Projet suivi des enquêteurs
           </Typography>
         </AccordionSummary>
         <AccordionDetails>
@@ -60,6 +60,21 @@ const Actualite = () => {
         <AccordionDetails>
           <Typography>
            Programme généraliste qui va récupérer l'ensemble des données, CAPI  SABIANE, ESANE, RP pour nourrir une app
+          </Typography>
+        </AccordionDetails>
+      </Accordion>
+
+      <Accordion defaultExpanded>
+        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+          <Typography color={colors.greenAccent[500]} variant="h5">
+            TO DO
+          </Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          <Typography>
+          Faire un schéma de dashboard pour chaque type d'aspect,
+          RP prix esane enquête et automatiser la conception pour Dirag général, 971 972 973
+          Authentification protection et export coté INSEE
           </Typography>
         </AccordionDetails>
       </Accordion>

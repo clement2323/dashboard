@@ -63,8 +63,8 @@ async function insertThenQuery(db,querySql) {
     return { id: index, ...row };
   });
   
-  console.log('rows')
-  console.log(rows)
+  // console.log('rows')
+  // console.log(rows)
   
 
   //result = query.JSON();

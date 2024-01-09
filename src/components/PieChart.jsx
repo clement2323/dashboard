@@ -1,147 +1,16 @@
 import { ResponsivePie } from "@nivo/pie";
 import { tokens } from "../theme";
 import { useTheme } from "@mui/material";
-import { mockPieData as data } from "../data/mockData";
-import { useState, useEffect } from "react";
-import DuckDb from "../DuckDb.js";
-
+import { repartitionFa as data } from "../data/duckDbData.js";
 
 
 
 const PieChart = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
- 
-  const [rows, setRows] = useState([]);
-
-  const doTest = async () => {
-
-    var result = await DuckDb.test(`
-    SELECT sum(nfa)-sum(realise) as nonrealise, sum(reussis) as reussis, sum(hc) as hc, sum(dechets) as dechets
-    FROM 'https://minio.lab.sspcloud.fr/cguillo/donnees_enq_concatennees.parquet'
-    `);
-
-
-    setRows(result);
-  };
-   
-  useEffect(() => {
-    console.log("KIKIII")
-   
-    doTest();
-    console.log(rows)
-  }, []);
   return (
     <ResponsivePie
       data={data}
-      theme={{
-        "background": "#ffffff",
-        "text": {
-            "fontSize": 11,
-            "fill": "#333333",
-            "outlineWidth": 0,
-            "outlineColor": "transparent"
-        },
-        "axis": {
-            "domain": {
-                "line": {
-                    "stroke": "#777777",
-                    "strokeWidth": 1
-                }
-            },
-            "legend": {
-                "text": {
-                    "fontSize": 12,
-                    "fill": "#333333",
-                    "outlineWidth": 0,
-                    "outlineColor": "transparent"
-                }
-            },
-            "ticks": {
-                "line": {
-                    "stroke": "#777777",
-                    "strokeWidth": 1
-                },
-                "text": {
-                    "fontSize": 11,
-                    "fill": "#333333",
-                    "outlineWidth": 0,
-                    "outlineColor": "transparent"
-                }
-            }
-        },
-        "grid": {
-            "line": {
-                "stroke": "#dddddd",
-                "strokeWidth": 1
-            }
-        },
-        "legends": {
-            "title": {
-                "text": {
-                    "fontSize": 11,
-                    "fill": "#333333",
-                    "outlineWidth": 0,
-                    "outlineColor": "transparent"
-                }
-            },
-            "text": {
-                "fontSize": 11,
-                "fill": "#333333",
-                "outlineWidth": 0,
-                "outlineColor": "transparent"
-            },
-            "ticks": {
-                "line": {},
-                "text": {
-                    "fontSize": 10,
-                    "fill": "#333333",
-                    "outlineWidth": 0,
-                    "outlineColor": "transparent"
-                }
-            }
-        },
-        "annotations": {
-            "text": {
-                "fontSize": 13,
-                "fill": "#333333",
-                "outlineWidth": 2,
-                "outlineColor": "#ffffff",
-                "outlineOpacity": 1
-            },
-            "link": {
-                "stroke": "#000000",
-                "strokeWidth": 1,
-                "outlineWidth": 2,
-                "outlineColor": "#ffffff",
-                "outlineOpacity": 1
-            },
-            "outline": {
-                "stroke": "#000000",
-                "strokeWidth": 2,
-                "outlineWidth": 2,
-                "outlineColor": "#ffffff",
-                "outlineOpacity": 1
-            },
-            "symbol": {
-                "fill": "#000000",
-                "outlineWidth": 2,
-                "outlineColor": "#ffffff",
-                "outlineOpacity": 1
-            }
-        },
-        "tooltip": {
-            "container": {
-                "background": "#ffffff",
-                "fontSize": 12
-            },
-            "basic": {},
-            "chip": {},
-            "table": {},
-            "tableCell": {},
-            "tableCellValue": {}
-        }
-    }}
       margin={{ top: 40, right: 80, bottom: 80, left: 80 }}
       innerRadius={0.5}
       padAngle={0.7}
@@ -210,5 +79,6 @@ const PieChart = () => {
     />
   );
 };
+
 
 export default PieChart;

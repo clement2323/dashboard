@@ -38,7 +38,7 @@ const Dashboard = () => {
       <Box display="flex" justifyContent="space-between" alignItems="center">
         <Header title="Tableau de bord" subtitle="Rien que des taux, encore des taux.." />
 
-        <Box>
+        {/* <Box>
           <Button
             sx={{
               backgroundColor: colors.blueAccent[700],
@@ -51,7 +51,7 @@ const Dashboard = () => {
             <DownloadOutlinedIcon sx={{ mr: "10px" }} />
             Download Reports
           </Button>
-        </Box>
+        </Box> */}
       </Box>
 
       {/* GRID & CHARTS */}

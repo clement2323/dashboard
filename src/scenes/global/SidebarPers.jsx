@@ -190,13 +190,13 @@ const Sidebar = () => {
             >
               Charts
             </Typography>
-            <Item
+            {/* <Item
               title="Bar Chart"
               to="/bar"
               icon={<BarChartOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
-            />
+            />  */}
             <Item
               title="Répartition des FA"
               to="/pie"

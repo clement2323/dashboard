@@ -3,31 +3,13 @@ import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
 import Header from "../../components/Header";
 import { useTheme } from "@mui/material";
-import { useState, useEffect } from "react";
-import DuckDb from "../../DuckDb.js";
-import { result as data } from "../../data/DuckDbData.js";
+import { enqueteurs as data } from "../../data/duckDbData.js";
 
 const Enqueteurs = () => {
 
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   
-  // const [rows, setRows] = useState([]);
-
-  // const doTest = async () => {
-  //   var result = await DuckDb.test(`
-  //   SELECT ident, dep, enquete, sum(nfa) as nfa, sum(reussis) as reussis, sum(realise) as realise, sum(hc) as hc, sum(dechets) as dechets
-  //   FROM 'https://minio.lab.sspcloud.fr/cguillo/donnees_enq_concatennees.parquet'
-  //   group by ident, enquete, dep
-  //   order by dep
-  //   `);
-  //   setRows(result);
-  // };
-   
-  // useEffect(() => {
-  //   doTest();
-  // }, []);
-
   const columns = [
     {
       field: "ident",

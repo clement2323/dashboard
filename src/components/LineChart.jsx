@@ -6,7 +6,7 @@ import { donneesEECLine as data } from "../data/DuckDbData.js";
 const LineChart = ({ isCustomLineColors = false, isDashboard = false }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-  // console.log(data);
+
   return (
     <ResponsiveLine
       data={data}

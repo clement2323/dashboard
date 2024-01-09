@@ -3,8 +3,6 @@ import { useTheme } from "@mui/material";
 import { tokens } from "../theme";
 
 const LineChart = ({ data, isCustomLineColors = false, isDashboard = false }) => {
-  console .log("COUCOU")
-  console.log(data)
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 

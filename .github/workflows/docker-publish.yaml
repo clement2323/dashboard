@@ -22,5 +22,5 @@ jobs:
           push: true
           context: .
           file: ./Dockerfile
-          tags: cguillo/dashboarddirag:vfake
+          tags: cguillo/dashboarddirag:vinsee
 

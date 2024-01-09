@@ -18,7 +18,7 @@ import {tauxEEC} from "../../data/DuckDbData.js";
 import {tauxHVP} from "../../data/DuckDbData.js";
 import {dataBarEEC} from "../../data/DuckDbData.js";
 
-
+//
 const Dashboard = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);

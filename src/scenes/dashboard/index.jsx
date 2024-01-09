@@ -301,7 +301,7 @@ const Dashboard = () => {
             fontWeight="600"
             sx={{ padding: "30px 30px 0 30px" }}
           >
-            Sales Quantity
+           EEC Par trimestre
           </Typography>
           <Box height="250px" mt="-20px">
             <BarChart data = {dataBarEEC}  isDashboard={true} />
@@ -318,7 +318,7 @@ const Dashboard = () => {
             fontWeight="600"
             sx={{ marginBottom: "15px" }}
           >
-            Geography Based Traffic
+            Taux de collecte par zone
           </Typography>
           <Box height="200px">
             <GeographyChart isDashboard={true} />

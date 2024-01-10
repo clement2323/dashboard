@@ -267,6 +267,72 @@ FROM cumul
 
 export const donneesENLLine = dataEnl;
 
+//LCH
+
+
+let dataLch =[]
+addSerie(dataLch,"DIRAG", "yellow", `
+  WITH cumul AS (
+    SELECT semaine, 
+           SUM(sum(reussis)) OVER (ORDER BY semaine ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) as reussis_cumul,
+           SUM(sum(nfa)) OVER (ORDER BY semaine ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) as nfa_cumul
+    FROM 'https://minio.lab.sspcloud.fr/cguillo/donnees_enq_concatennees.parquet'
+    WHERE enquete = 'LCH' And semaine IN (36, 37,43,45,46,47,48,49)
+    GROUP BY semaine
+    ORDER BY semaine
+  )
+  SELECT semaine as x, 100*reussis_cumul/ nfa_cumul as y
+  FROM cumul
+  
+`);
+ 
+
+  addSerie(dataLch,"Martinique", "red", `
+  WITH cumul AS (
+    SELECT semaine, 
+           SUM(sum(reussis)) OVER (ORDER BY semaine ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) as reussis_cumul,
+           SUM(sum(nfa)) OVER (ORDER BY semaine ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) as nfa_cumul
+    FROM 'https://minio.lab.sspcloud.fr/cguillo/donnees_enq_concatennees.parquet'
+    WHERE enquete = 'LCH' AND dep = '972' And semaine IN (36, 37,43,45,46,47,48,49)
+    GROUP BY semaine
+    ORDER BY semaine
+  )
+  SELECT semaine as x, 100*reussis_cumul/ nfa_cumul as y
+  FROM cumul
+  
+`);
+
+addSerie(dataLch,"Guyane", "green", `
+WITH cumul AS (
+  SELECT semaine, 
+         SUM(sum(reussis)) OVER (ORDER BY semaine ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) as reussis_cumul,
+         SUM(sum(nfa)) OVER (ORDER BY semaine ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) as nfa_cumul
+  FROM 'https://minio.lab.sspcloud.fr/cguillo/donnees_enq_concatennees.parquet'
+  WHERE enquete = 'LCH' AND dep = '973' and semaine IN (36, 37,43,45,46,47,48,49)
+  GROUP BY semaine
+  ORDER BY semaine
+)
+SELECT semaine as x, 100*reussis_cumul/ nfa_cumul as y
+FROM cumul
+
+`);
+
+addSerie(dataLch,"Guadeloupe", "orange", `
+WITH cumul AS (
+  SELECT semaine, 
+         SUM(sum(reussis)) OVER (ORDER BY semaine ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) as reussis_cumul,
+         SUM(sum(nfa)) OVER (ORDER BY semaine ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) as nfa_cumul
+  FROM 'https://minio.lab.sspcloud.fr/cguillo/donnees_enq_concatennees.parquet'
+  WHERE enquete = 'LCH' AND dep = '971' And semaine IN (36, 37,43,45,46,47,48,49)
+  GROUP BY semaine
+  ORDER BY semaine
+)
+SELECT semaine as x, 100*reussis_cumul/ nfa_cumul as y
+FROM cumul
+
+`);
+export const donneesLCHLine = dataLch;
+
 // Taux
 
 const resultEEC = await DuckDb.test(`

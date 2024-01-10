@@ -15,6 +15,7 @@ import ProgressCircle from "../../components/ProgressCircle";
 import { donneesEECLine as dataEEC } from "../../data/DuckDbData.js";
 import { donneesHVPLine as dataHVP } from "../../data/DuckDbData.js";
 import { donneesENLLine as dataENL } from "../../data/DuckDbData.js";
+import { donneesLCHLine as dataLCH } from "../../data/DuckDbData.js";
 import { tauxEEC } from "../../data/DuckDbData.js";
 import { tauxHVP } from "../../data/DuckDbData.js";
 import { tauxENL } from "../../data/DuckDbData.js";
@@ -92,10 +93,7 @@ const Dashboard = () => {
       >
    
        <FenetreGraphique titre={"Enquête EEC"} donnees = {dataEEC} spanColumn={"span 4"}></FenetreGraphique>
-       <FenetreGraphique titre={"Enquête HVP"} donnees = {dataHVP} spanColumn={"span 4"}></FenetreGraphique>
-       <FenetreGraphique titre={"Enquête ENL"} donnees = {dataENL} spanColumn={"span 4"}></FenetreGraphique>
-       
-        <Box
+       <Box
           gridColumn="span 4"
           gridRow="span 2"
           backgroundColor={colors.primary[400]}
@@ -120,9 +118,12 @@ const Dashboard = () => {
               taux de collecte HVP : {tauxHVP} % <br />
               taux de collecte ENL : {tauxENL} %
             </Typography>
-            <Typography></Typography>
           </Box>
         </Box>
+       <FenetreGraphique titre={"Enquête HVP"} donnees = {dataHVP} spanColumn={"span 4"}></FenetreGraphique>
+       <FenetreGraphique titre={"Enquête ENL"} donnees = {dataENL} spanColumn={"span 4"}></FenetreGraphique>
+       <FenetreGraphique titre={"Enquête L&C"} donnees = {dataLCH} spanColumn={"span 4"}></FenetreGraphique>
+  
         <Box
           gridColumn="span 4"
           gridRow="span 2"
@@ -139,7 +140,7 @@ const Dashboard = () => {
             <BarChart data={dataBarEEC} isDashboard={true} />
           </Box>
         </Box>
-        <Box
+        {/* <Box
           gridColumn="span 4"
           gridRow="span 2"
           backgroundColor={colors.primary[400]}
@@ -155,7 +156,7 @@ const Dashboard = () => {
           <Box height="200px">
             <GeographyChart isDashboard={true} />
           </Box>
-        </Box>
+        </Box> */}
       </Box>
     </Box>
   );

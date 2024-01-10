@@ -20,6 +20,7 @@ const labels =["non realisées", "Fa réussies", "hors champ", "dechets"]
 
 
 delete result[0].id;
+
 result = Object.keys(result[0]).map((key, index) => ({
   id: key,
   label: labels[index],
@@ -32,8 +33,9 @@ result = Object.keys(result[0]).map((key, index) => ({
 export const repartitionFa  = result.map(row => {
   if (row.value instanceof Uint32Array && row.value.length > 0) {
     row.value = row.value[0];
-    return row;
-  }})
+  }
+  return row;
+})
 
 
   //Line Chart EEC
@@ -49,27 +51,28 @@ export const repartitionFa  = result.map(row => {
     });
   }
 
-  const data = []
-  const addSerie = async (id, color, sqlQuery) => {
+
+  const addSerie = async (dt,id, color, sqlQuery) => {
     
     let result = await DuckDb.test(sqlQuery);
     result = transformResult(result);    
     
     // C'est une rustine je me prémunis de la double execution..
    
-      if (data.some(item => item.id === id)) {
+      if (dt.some(item => item.id === id)) {
         return ;
       } else {
         // Si la clé n'existe pas, ajoute le nouvel objet au tableau
-        data.push({
+        dt.push({
           id: id,
           color: color,
           data: result
         });
       }
-    };
 
-  addSerie("DIRAG", `yellow`, `
+    };
+let data =[];
+addSerie(data,"DIRAG", `yellow`, `
   WITH cumul AS (
     SELECT semaine, 
            SUM(sum(reussis)) OVER (ORDER BY semaine ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) as reussis_cumul,
@@ -85,7 +88,7 @@ export const repartitionFa  = result.map(row => {
 `);
  
 
-  addSerie("Martinique", "red", `
+  addSerie(data,"Martinique", "red", `
   WITH cumul AS (
     SELECT semaine, 
            SUM(sum(reussis)) OVER (ORDER BY semaine ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) as reussis_cumul,
@@ -100,7 +103,7 @@ export const repartitionFa  = result.map(row => {
   
 `);
 
-addSerie("Guyane", "green", `
+addSerie(data,"Guyane", "green", `
 WITH cumul AS (
   SELECT semaine, 
          SUM(sum(reussis)) OVER (ORDER BY semaine ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) as reussis_cumul,
@@ -115,7 +118,7 @@ FROM cumul
 
 `);
 
-addSerie("Guadeloupe", "orange", `
+addSerie(data,"Guadeloupe", "orange", `
 WITH cumul AS (
   SELECT semaine, 
          SUM(sum(reussis)) OVER (ORDER BY semaine ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) as reussis_cumul,
@@ -131,27 +134,11 @@ FROM cumul
 `);
 
 export const donneesEECLine = data;
+
+
 //HVP
-const dataHvp =[]
-const addSerie2 = async (id, color, sqlQuery) => {
-    
-    let result = await DuckDb.test(sqlQuery);
-    result = transformResult(result);    
-    
-    // C'est une rustine je me prémunis de la double execution..
-   
-      if (dataHvp.some(item => item.id === id)) {
-        return ;
-      } else {
-        // Si la clé n'existe pas, ajoute le nouvel objet au tableau
-        dataHvp.push({
-          id: id,
-          color: color,
-          data: result
-        });
-      }
-    };
-addSerie2("DIRAG", "yellow", `
+let dataHvp =[]
+addSerie(dataHvp,"DIRAG", "yellow", `
   WITH cumul AS (
     SELECT semaine, 
            SUM(sum(reussis)) OVER (ORDER BY semaine ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) as reussis_cumul,
@@ -167,7 +154,7 @@ addSerie2("DIRAG", "yellow", `
 `);
  
 
-  addSerie2("Martinique", "red", `
+  addSerie(dataHvp,"Martinique", "red", `
   WITH cumul AS (
     SELECT semaine, 
            SUM(sum(reussis)) OVER (ORDER BY semaine ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) as reussis_cumul,
@@ -182,7 +169,7 @@ addSerie2("DIRAG", "yellow", `
   
 `);
 
-addSerie2("Guyane", "green", `
+addSerie(dataHvp,"Guyane", "green", `
 WITH cumul AS (
   SELECT semaine, 
          SUM(sum(reussis)) OVER (ORDER BY semaine ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) as reussis_cumul,
@@ -197,7 +184,7 @@ FROM cumul
 
 `);
 
-addSerie2("Guadeloupe", "orange", `
+addSerie(dataHvp,"Guadeloupe", "orange", `
 WITH cumul AS (
   SELECT semaine, 
          SUM(sum(reussis)) OVER (ORDER BY semaine ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) as reussis_cumul,
@@ -214,8 +201,73 @@ FROM cumul
 
 export const donneesHVPLine = dataHvp;
 
+// ENL
 
+let dataEnl =[]
+addSerie(dataEnl,"DIRAG", "yellow", `
+  WITH cumul AS (
+    SELECT semaine, 
+           SUM(sum(reussis)) OVER (ORDER BY semaine ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) as reussis_cumul,
+           SUM(sum(nfa)) OVER (ORDER BY semaine ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) as nfa_cumul
+    FROM 'https://minio.lab.sspcloud.fr/cguillo/donnees_enq_concatennees.parquet'
+    WHERE enquete = 'ENL' And semaine IN (36, 37,43,45,46,47,48,49)
+    GROUP BY semaine
+    ORDER BY semaine
+  )
+  SELECT semaine as x, 100*reussis_cumul/ nfa_cumul as y
+  FROM cumul
+  
+`);
+ 
 
+  addSerie(dataEnl,"Martinique", "red", `
+  WITH cumul AS (
+    SELECT semaine, 
+           SUM(sum(reussis)) OVER (ORDER BY semaine ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) as reussis_cumul,
+           SUM(sum(nfa)) OVER (ORDER BY semaine ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) as nfa_cumul
+    FROM 'https://minio.lab.sspcloud.fr/cguillo/donnees_enq_concatennees.parquet'
+    WHERE enquete = 'ENL' AND dep = '972' And semaine IN (36, 37,43,45,46,47,48,49)
+    GROUP BY semaine
+    ORDER BY semaine
+  )
+  SELECT semaine as x, 100*reussis_cumul/ nfa_cumul as y
+  FROM cumul
+  
+`);
+
+addSerie(dataEnl,"Guyane", "green", `
+WITH cumul AS (
+  SELECT semaine, 
+         SUM(sum(reussis)) OVER (ORDER BY semaine ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) as reussis_cumul,
+         SUM(sum(nfa)) OVER (ORDER BY semaine ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) as nfa_cumul
+  FROM 'https://minio.lab.sspcloud.fr/cguillo/donnees_enq_concatennees.parquet'
+  WHERE enquete = 'ENL' AND dep = '973' and semaine IN (36, 37,43,45,46,47,48,49)
+  GROUP BY semaine
+  ORDER BY semaine
+)
+SELECT semaine as x, 100*reussis_cumul/ nfa_cumul as y
+FROM cumul
+
+`);
+
+addSerie(dataEnl,"Guadeloupe", "orange", `
+WITH cumul AS (
+  SELECT semaine, 
+         SUM(sum(reussis)) OVER (ORDER BY semaine ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) as reussis_cumul,
+         SUM(sum(nfa)) OVER (ORDER BY semaine ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) as nfa_cumul
+  FROM 'https://minio.lab.sspcloud.fr/cguillo/donnees_enq_concatennees.parquet'
+  WHERE enquete = 'ENL' AND dep = '971' And semaine IN (36, 37,43,45,46,47,48,49)
+  GROUP BY semaine
+  ORDER BY semaine
+)
+SELECT semaine as x, 100*reussis_cumul/ nfa_cumul as y
+FROM cumul
+
+`);
+
+export const donneesENLLine = dataEnl;
+
+// Taux
 
 const resultEEC = await DuckDb.test(`
   SELECT ROUND(100 * SUM(reussis) / SUM(nfa)) as taux
@@ -231,12 +283,19 @@ const resultHVP = await DuckDb.test(`
   `);
 export const tauxHVP = resultHVP[0].taux;
 
+const resultENL = await DuckDb.test(`
+  SELECT ROUND(100 * SUM(reussis) / SUM(nfa)) as taux
+  FROM 'https://minio.lab.sspcloud.fr/cguillo/donnees_enq_concatennees.parquet'
+  where enquete = 'ENL'
+  `);
+export const tauxENL = resultENL[0].taux;
 
 // bar graphique oar trimestre EEC
 
 let resultEECTrim = await DuckDb.test(`
   SELECT trimestre, (sum(nfa)-sum(realise)) as nonrealise, sum(reussis) as reussis, sum(hc) as hc, sum(dechets) as dechets
   FROM 'https://minio.lab.sspcloud.fr/cguillo/donnees_enq_concatennees.parquet'
+  WHERE trimestre is not null
   GROUP BY trimestre
   order by trimestre 
   `);

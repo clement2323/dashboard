@@ -14,23 +14,157 @@ import BarChart from "../../components/BarChart";
 import ProgressCircle from "../../components/ProgressCircle";
 import { donneesEECLine as dataEEC } from "../../data/DuckDbData.js";
 import { donneesHVPLine as dataHVP } from "../../data/DuckDbData.js";
-import {tauxEEC} from "../../data/DuckDbData.js";
-import {tauxHVP} from "../../data/DuckDbData.js";
-import {dataBarEEC} from "../../data/DuckDbData.js";
+import { donneesENLLine as dataENL } from "../../data/DuckDbData.js";
+import { tauxEEC } from "../../data/DuckDbData.js";
+import { tauxHVP } from "../../data/DuckDbData.js";
+import { tauxENL } from "../../data/DuckDbData.js";
+
+import { dataBarEEC } from "../../data/DuckDbData.js";
 
 //
+
+const FenetreGraphique = ({titre,donnees,spanColumn}) => {
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
+
+  return (
+    <Box
+      gridColumn={spanColumn} //"span 4"
+      gridRow="span 2"
+      backgroundColor={colors.primary[400]}
+    >
+      <Box
+        mt="25px"
+        p="0 30px"
+        display="flex "
+        justifyContent="space-between"
+        alignItems="center"
+      >
+        {/* <Box> */}
+        <Typography variant="h5" fontWeight="600" color={colors.grey[100]}>
+         {titre}
+        </Typography>
+        {/* <Typography
+        variant="h3"
+        fontWeight="bold"
+        color={colors.greenAccent[500]}
+      >
+        $59,342.32
+      </Typography>  */}
+        {/* </Box> */}
+        <Box>
+          <IconButton>
+            <DownloadOutlinedIcon
+              sx={{ fontSize: "26px", color: colors.greenAccent[500] }}
+            />
+          </IconButton>
+        </Box>
+      </Box>
+      <Box height="250px" m="-20px 0 0 0">
+        <LineChart isDashboard={true} data={donnees} />
+      </Box>
+    </Box>
+  );
+};
+
 const Dashboard = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-  
 
   return (
     <Box m="20px">
       {/* HEADER */}
       <Box display="flex" justifyContent="space-between" alignItems="center">
-        <Header title="Tableau de bord" subtitle="Rien que des taux, encore des taux.." />
+        <Header
+          title="Tableau de bord"
+          subtitle="Rien que des taux, encore des taux.."
+        />
 
-        {/* <Box>
+    
+      </Box>
+
+      {/* GRID & CHARTS */}
+      <Box
+        display="grid"
+        gridTemplateColumns="repeat(12, 1fr)"
+        gridAutoRows="140px"
+        gap="20px"
+      >
+   
+       <FenetreGraphique titre={"Enquête EEC"} donnees = {dataEEC} spanColumn={"span 4"}></FenetreGraphique>
+       <FenetreGraphique titre={"Enquête HVP"} donnees = {dataHVP} spanColumn={"span 4"}></FenetreGraphique>
+       <FenetreGraphique titre={"Enquête ENL"} donnees = {dataENL} spanColumn={"span 4"}></FenetreGraphique>
+       
+        <Box
+          gridColumn="span 4"
+          gridRow="span 2"
+          backgroundColor={colors.primary[400]}
+          p="30px"
+        >
+          <Typography variant="h5" fontWeight="600">
+            Enquêtes ménages
+          </Typography>
+          <Box
+            display="flex"
+            flexDirection="column"
+            alignItems="center"
+            mt="25px"
+          >
+            <ProgressCircle size="100" />
+            <Typography
+              variant="h5"
+              color={colors.greenAccent[500]}
+              sx={{ mt: "15px" }}
+            >
+              taux de collecte EEC : {tauxEEC} % <br />
+              taux de collecte HVP : {tauxHVP} % <br />
+              taux de collecte ENL : {tauxENL} %
+            </Typography>
+            <Typography></Typography>
+          </Box>
+        </Box>
+        <Box
+          gridColumn="span 4"
+          gridRow="span 2"
+          backgroundColor={colors.primary[400]}
+        >
+          <Typography
+            variant="h5"
+            fontWeight="600"
+            sx={{ padding: "30px 30px 0 30px" }}
+          >
+            EEC Par trimestre
+          </Typography>
+          <Box height="250px" mt="-20px">
+            <BarChart data={dataBarEEC} isDashboard={true} />
+          </Box>
+        </Box>
+        <Box
+          gridColumn="span 4"
+          gridRow="span 2"
+          backgroundColor={colors.primary[400]}
+          padding="30px"
+        >
+          <Typography
+            variant="h5"
+            fontWeight="600"
+            sx={{ marginBottom: "15px" }}
+          >
+            Taux de collecte par zone
+          </Typography>
+          <Box height="200px">
+            <GeographyChart isDashboard={true} />
+          </Box>
+        </Box>
+      </Box>
+    </Box>
+  );
+};
+
+export default Dashboard;
+
+
+/* <Box>
           <Button
             sx={{
               backgroundColor: colors.blueAccent[700],
@@ -43,18 +177,10 @@ const Dashboard = () => {
             <DownloadOutlinedIcon sx={{ mr: "10px" }} />
             Download Reports
           </Button>
-        </Box> */}
-      </Box>
+        </Box> */
 
-      {/* GRID & CHARTS */}
-      <Box
-        display="grid"
-        gridTemplateColumns="repeat(12, 1fr)"
-        gridAutoRows="140px"
-        gap="20px"
-      >
-        {/* ROW 1 */}
-        {/* <Box
+     /* ROW 1 */
+        /* <Box
           gridColumn="span 3"
           backgroundColor={colors.primary[400]}
           display="flex"
@@ -129,90 +255,11 @@ const Dashboard = () => {
               />
             }
           />
-        </Box> */}
+        </Box> */
 
-        {/* ROW 2 */}
-        <Box
-          gridColumn="span 6"
-          gridRow="span 2"
-          backgroundColor={colors.primary[400]}
-        >
-          <Box
-            mt="25px"
-            p="0 30px"
-            display="flex "
-            justifyContent="space-between"
-            alignItems="center"
-          >
-            {/* <Box> */}
-              <Typography
-                variant="h5"
-                fontWeight="600"
-                color={colors.grey[100]}
-              >
-                Enquête EEC
-              </Typography>
-              {/* <Typography
-                variant="h3"
-                fontWeight="bold"
-                color={colors.greenAccent[500]}
-              >
-                $59,342.32
-              </Typography>  */}
-            {/* </Box> */}
-            <Box>
-              <IconButton>
-                <DownloadOutlinedIcon
-                  sx={{ fontSize: "26px", color: colors.greenAccent[500] }}
-                />
-              </IconButton>
-            </Box>
-          </Box>
-          <Box height="250px" m="-20px 0 0 0">
-            <LineChart isDashboard={true} data ={dataEEC} />
-          </Box>
-        </Box>
-        <Box
-          gridColumn="span 6"
-          gridRow="span 2"
-          backgroundColor={colors.primary[400]}
-        >
-          <Box
-            mt="25px"
-            p="0 30px"
-            display="flex "
-            justifyContent="space-between"
-            alignItems="center"
-          >
-            {/* <Box> */}
-              <Typography
-                variant="h5"
-                fontWeight="600"
-                color={colors.grey[100]}
-              >
-                Enquête HVP
-              </Typography>
-              {/* <Typography
-                variant="h3"
-                fontWeight="bold"
-                color={colors.greenAccent[500]}
-              >
-                $59,342.32
-              </Typography>  */}
-            {/* </Box> */}
-            <Box>
-              <IconButton>
-                <DownloadOutlinedIcon
-                  sx={{ fontSize: "26px", color: colors.greenAccent[500] }}
-                />
-              </IconButton>
-            </Box>
-          </Box>
-          <Box height="250px" m="-20px 0 0 0">
-            <LineChart isDashboard={true} data ={dataHVP} />
-          </Box>
-        </Box>
-        {/* <Box
+        /* ROW 2 */
+
+        /* <Box
           gridColumn="span 4"
           gridRow="span 2"
           backgroundColor={colors.primary[400]}
@@ -261,72 +308,6 @@ const Dashboard = () => {
               </Box>
             </Box>
           ))}
-        </Box> */}
+        </Box> */
 
-        {/* ROW 3 */}
-        <Box
-          gridColumn="span 4"
-          gridRow="span 2"
-          backgroundColor={colors.primary[400]}
-          p="30px"
-        >
-          <Typography variant="h5" fontWeight="600">
-            Enquêtes ménages
-          </Typography>
-          <Box
-            display="flex"
-            flexDirection="column"
-            alignItems="center"
-            mt="25px"
-          >
-            <ProgressCircle size="100"/>
-            <Typography
-              variant="h5"
-              color={colors.greenAccent[500]}
-              sx={{ mt: "15px" }}
-            >
-              taux de collecte EEC : {tauxEEC} % <br />
-              taux de collecte HVP : {tauxHVP} %
-            </Typography>
-            <Typography></Typography>
-          </Box>
-        </Box>
-        <Box
-          gridColumn="span 4"
-          gridRow="span 2"
-          backgroundColor={colors.primary[400]}
-        >
-          <Typography
-            variant="h5"
-            fontWeight="600"
-            sx={{ padding: "30px 30px 0 30px" }}
-          >
-           EEC Par trimestre
-          </Typography>
-          <Box height="250px" mt="-20px">
-            <BarChart data = {dataBarEEC}  isDashboard={true} />
-          </Box>
-        </Box>
-        <Box
-          gridColumn="span 4"
-          gridRow="span 2"
-          backgroundColor={colors.primary[400]}
-          padding="30px"
-        >
-          <Typography
-            variant="h5"
-            fontWeight="600"
-            sx={{ marginBottom: "15px" }}
-          >
-            Taux de collecte par zone
-          </Typography>
-          <Box height="200px">
-            <GeographyChart isDashboard={true} />
-          </Box>
-        </Box>
-      </Box>
-    </Box>
-  );
-};
-
-export default Dashboard;
+        /* ROW 3 */
